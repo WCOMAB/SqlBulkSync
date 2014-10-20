@@ -1,0 +1,8 @@
+=SourceDbConnection
+	Data Source=localhost;Initial Catalog=SourceDatabase;Integrated Security=true;
+=TargetDbConnection
+	Data Source=localhost;Initial Catalog=TargetDatabase;Integrated Security=true;
+=Tables
+	dbo.Company
+=BatchSize
+	1000
