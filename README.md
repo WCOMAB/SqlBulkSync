@@ -1,5 +1,5 @@
 #WCOM SqlBulkSync
-WCOM SQL Bulk is a lightweight, performant non-intrusive SQL Server data sync tool.
+WCOM SQL Bulk Sync is a lightweight, performant non-intrusive SQL Server data sync tool.
 It doesn’t use any triggers or events, but instead uses the change tracking features available from SQL Server 2008 and up.
 The tool was developed primary for syncing on premise SQL server data to Azure in an efficient way, where only the changes are transferred. But it will also work just fine between non cloud instances.
 
@@ -11,10 +11,10 @@ The tool was developed primary for syncing on premise SQL server data to Azure i
     * [Sample job sync file](#sample-job-sync-file)
     * [Sample table sync state file](#sample-table-sync-state-file)
 3. [Sample sync](#sample-sync)
-    * [CreateSourceDb.sql](#createsourcedb.sql)
-    * [CreateTargetDb.sql](#createtargetdb.sql)
-    * [CompanySync.hron](#companysync.hron)
-    * [RandomUpdate.sql](#randomupdate.sql)
+    * [CreateSourceDb.sql](#createsourcedbsql)
+    * [CreateTargetDb.sql](#createtargetdbsql)
+    * [CompanySync.hron](#companysynchron)
+    * [RandomUpdate.sql](#randomupdatesql)
 
 ##Usage
 ```
@@ -29,7 +29,7 @@ The sync job file contains source & target database connection and which tables 
 The tool currently has some opinions:
 * It assumes table schema and naming are the same at source and target
 * It assumes that change tracking is enabled
-* And that a `sync` role is present at the target(it's used for the sync tables as i.e. Azure cant BulkImport into temp tables)
+* And that a `sync` schema is present at the target(it's used for the sync tables as i.e. Azure cant BulkImport into temp tables)
 
 Other than that it will dynamically investigate schema, create sync tables and only sync data from non-calculated columns.
 ###Example create template
