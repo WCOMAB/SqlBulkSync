@@ -72,16 +72,16 @@ The job sync file is the definition of what and where from/to sync.
 These files are created automatically in a SyncState folder in the same location as the program. One file per table is created, after every successful sync it's updated with the synced version. If file doesn't exist a full sync will occur. 
 
 ##Sample sync
-A sample database for testing is avalilable in the [sample-sync](../sample-sync/) folder in the repositiory.
+A sample database for testing is avalilable in the [sample-sync](https://github.com/WCOMAB/SqlBulkSync/tree/master/sample-sync) folder in the repositiory.
 
 ###CreateSourceDb.sql
-The [CreateSourceDb.sql](../sample-sync/CreateSourceDb.sql) SQL script will create a sample source database, with schema, data and change tracking enabled.
+The [CreateSourceDb.sql](https://github.com/WCOMAB/SqlBulkSync/tree/master/sample-sync/CreateSourceDb.sql) SQL script will create a sample source database, with schema, data and change tracking enabled.
 
 ###CreateTargetDb.sql
-The [CreateTargetDb.sql](../sample-sync/CreateTargetDb.sql) SQL script will create an sample target database with schema but no data.
+The [CreateTargetDb.sql](https://github.com/WCOMAB/SqlBulkSync/tree/master/sample-sync/CreateTargetDb.sql) SQL script will create an sample target database with schema but no data.
 
 ###CompanySync.hron
-The [CompanySync.hron](../sample-sync/CompanySync.hron) job sync file is set to sync the sample Company table from `SourceDatabase` to `TargetDatabase` on `localhost` default instance using integrated security.
+The [CompanySync.hron](https://github.com/WCOMAB/SqlBulkSync/tree/master/sample-sync/CompanySync.hron) job sync file is set to sync the sample Company table from `SourceDatabase` to `TargetDatabase` on `localhost` default instance using integrated security.
 
 ###RandomUpdate.sql
-The [RandomUpdate.sql](../sample-sync/RandomUpdate.sql) SQL script just updates 5 random rows in the table to test the sync. 
+The [RandomUpdate.sql](https://github.com/WCOMAB/SqlBulkSync/tree/master/sample-sync/RandomUpdate.sql) SQL script just updates 5 random rows in the table to test the sync. 
