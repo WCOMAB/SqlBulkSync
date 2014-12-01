@@ -5,7 +5,7 @@
 // #                                                                          #
 // # This means that any edits to the .cs file will be lost when its          #
 // # regenerated. Changes should instead be applied to the corresponding      #
-// # text template file (.tt)                                                      #
+// # text template file (.tt)                                                 #
 // ############################################################################
 
 
@@ -59,6 +59,9 @@
 // Certains directives such as #define and // Resharper comments has to be 
 // moved to top in order to work properly    
 // ############################################################################
+#pragma warning disable 0618
+#pragma warning disable 612, 618
+#pragma warning disable 618
 // ReSharper disable InconsistentNaming
 // ReSharper disable PartialMethodWithSinglePart
 // ReSharper disable PartialTypeWithSinglePart
@@ -3369,7 +3372,7 @@ namespace WCOM.SqlBulkSync
         public enum CommandFlags
         {
             /// <summary>
-            /// No additonal flags
+            /// No additional flags
             /// </summary>
             None = 0,
             /// <summary>
@@ -3599,7 +3602,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Extends IDynamicParameters with facitilies for executing callbacks after commands have completed
+            /// Extends IDynamicParameters with facilities for executing callbacks after commands have completed
             /// </summary>
             public partial interface IParameterCallbacks : IDynamicParameters
             {
@@ -3713,7 +3716,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Implement this interface to change default mapping of reader columns to type memebers
+            /// Implement this interface to change default mapping of reader columns to type members
             /// </summary>
             public interface ITypeMap
             {
@@ -3730,7 +3733,7 @@ namespace WCOM.SqlBulkSync
                 /// 
                 /// Parameters will be default values, nulls for reference types and zero'd for value types.
                 /// 
-                /// Use this class to force object creation away from parameterless constructors you dn't control.
+                /// Use this class to force object creation away from parameterless constructors you don't control.
                 /// </summary>
                 ConstructorInfo FindExplicitConstructor();
     
@@ -4071,7 +4074,7 @@ namespace WCOM.SqlBulkSync
                 AddTypeHandlerImpl(typeof(DataTable), new DataTableHandler(), true);
             }
             /// <summary>
-            /// Configire the specified type to be mapped to a given db-type
+            /// Configure the specified type to be mapped to a given db-type
             /// </summary>
             public static void AddTypeMap(Type type, DbType dbType)
             {
@@ -4087,7 +4090,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Configire the specified type to be processed by a custom handler
+            /// Configure the specified type to be processed by a custom handler
             /// </summary>
             public static void AddTypeHandler(Type type, ITypeHandler handler)
             {
@@ -4095,7 +4098,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Configire the specified type to be processed by a custom handler
+            /// Configure the specified type to be processed by a custom handler
             /// </summary>
             public static void AddTypeHandlerImpl(Type type, ITypeHandler handler, bool clone)
             {
@@ -4123,13 +4126,11 @@ namespace WCOM.SqlBulkSync
     
                 var newCopy = clone ? new Dictionary<Type, ITypeHandler>(snapshot) : snapshot;
     
-    #pragma warning disable 618
                 typeof(TypeHandlerCache<>).MakeGenericType(type).GetMethod("SetHandler", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { handler });
                 if(secondary != null)
                 {
                     typeof(TypeHandlerCache<>).MakeGenericType(secondary).GetMethod("SetHandler", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { handler });
                 }
-    #pragma warning restore 618
                 if (handler == null)
                 {
                     newCopy.Remove(type);
@@ -4144,7 +4145,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Configire the specified type to be processed by a custom handler
+            /// Configure the specified type to be processed by a custom handler
             /// </summary>
             public static void AddTypeHandler<T>(TypeHandler<T> handler)
             {
@@ -4179,9 +4180,7 @@ namespace WCOM.SqlBulkSync
     
                 internal static void SetHandler(ITypeHandler handler)
                 {
-    #pragma warning disable 618
                     TypeHandlerCache<T>.handler = handler;
-    #pragma warning restore 618
                 }
     
                 private static ITypeHandler handler;
@@ -4249,7 +4248,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Identity of a cached query in Dapper, used for extensability
+            /// Identity of a cached query in Dapper, used for extensibility
             /// </summary>
             public partial class Identity : IEquatable<Identity>
             {
@@ -4936,8 +4935,8 @@ namespace WCOM.SqlBulkSync
             /// <summary>
             /// Maps a query to objects
             /// </summary>
-            /// <typeparam name="TFirst">The first type in the recordset</typeparam>
-            /// <typeparam name="TSecond">The second type in the recordset</typeparam>
+            /// <typeparam name="TFirst">The first type in the record set</typeparam>
+            /// <typeparam name="TSecond">The second type in the record set</typeparam>
             /// <typeparam name="TReturn">The return type</typeparam>
             /// <param name="cnn"></param>
             /// <param name="sql"></param>
@@ -5104,7 +5103,7 @@ namespace WCOM.SqlBulkSync
             /// <typeparam name="TReturn">The return type</typeparam>
             /// <param name="cnn"></param>
             /// <param name="sql"></param>
-            /// <param name="types">array of types in the recordset</param>
+            /// <param name="types">array of types in the record set</param>
             /// <param name="map"></param>
             /// <param name="param"></param>
             /// <param name="transaction"></param>
@@ -6243,9 +6242,7 @@ namespace WCOM.SqlBulkSync
                 foreach (var token in tokens)
                 {
                     object value = parameters[token.Member];
-    #pragma warning disable 0618
                     string text = Format(value);
-    #pragma warning restore 0618
                     sql = sql.Replace(token.Token, text);
                 }
                 command.CommandText = sql;
@@ -6494,9 +6491,7 @@ namespace WCOM.SqlBulkSync
     
                     if (handler != null)
                     {
-    #pragma warning disable 618
                         il.Emit(OpCodes.Call, typeof(TypeHandlerCache<>).MakeGenericType(prop.PropertyType).GetMethod("SetValue")); // stack is now [parameters] [[parameters]] [parameter]
-    #pragma warning restore 618
                     }
                     else
                     {
@@ -6582,7 +6577,7 @@ namespace WCOM.SqlBulkSync
                                 case TypeCode.Single:
                                 case TypeCode.Double:
                                 case TypeCode.Decimal:
-                                    // neeed to stloc, ldloca, call
+                                    // need to stloc, ldloca, call
                                     // re-use existing locals (both the last known, and via a dictionary)
                                     var convert = GetToString(typeCode);
                                     if (local == null || local.LocalType != propType)
@@ -6729,7 +6724,6 @@ namespace WCOM.SqlBulkSync
             private static Func<IDataReader, object> GetStructDeserializer(Type type, Type effectiveType, int index)
             {
                 // no point using special per-type handling here; it boils down to the same, plus not all are supported anyway (see: SqlDataReader.GetChar - not supported!)
-    #pragma warning disable 618
                 if (type == typeof(char))
                 { // this *does* need special handling, though
                     return r => SqlMapper.ReadChar(r.GetValue(index));
@@ -6742,7 +6736,6 @@ namespace WCOM.SqlBulkSync
                 {
                     return r => Activator.CreateInstance(type, r.GetValue(index));
                 }
-    #pragma warning restore 618
     
                 if (effectiveType.IsEnum)
                 {   // assume the value is returned as the correct type (int/byte/etc), but box back to the typed enum
@@ -7070,9 +7063,7 @@ namespace WCOM.SqlBulkSync
                                 {
                                     if (hasTypeHandler)
                                     {
-    #pragma warning disable 618
                                         il.EmitCall(OpCodes.Call, typeof(TypeHandlerCache<>).MakeGenericType(unboxType).GetMethod("Parse"), null); // stack is now [target][target][typed-value]
-    #pragma warning restore 618
                                     }
                                     else
                                     {
@@ -7416,7 +7407,7 @@ namespace WCOM.SqlBulkSync
             /// <summary>
             /// How should connection strings be compared for equivalence? Defaults to StringComparer.Ordinal.
             /// Providing a custom implementation can be useful for allowing multi-tenancy databases with identical
-            /// schema to share startegies. Note that usual equivalence rules apply: any equivalent connection strings
+            /// schema to share strategies. Note that usual equivalence rules apply: any equivalent connection strings
             /// <b>MUST</b> yield the same hash-code.
             /// </summary>
             public static IEqualityComparer<string> ConnectionStringComparer
@@ -7536,7 +7527,7 @@ namespace WCOM.SqlBulkSync
     
     #if CSHARP30
                 /// <summary>
-                /// Read multiple objects from a single recordset on the grid
+                /// Read multiple objects from a single record set on the grid
                 /// </summary>
                 public IEnumerable<TReturn> Read<TFirst, TSecond, TReturn>(Func<TFirst, TSecond, TReturn> func, string splitOn)
                 {
@@ -7544,7 +7535,7 @@ namespace WCOM.SqlBulkSync
                 }
     #endif
                 /// <summary>
-                /// Read multiple objects from a single recordset on the grid
+                /// Read multiple objects from a single record set on the grid
                 /// </summary>
     #if CSHARP30
                 public IEnumerable<TReturn> Read<TFirst, TSecond, TReturn>(Func<TFirst, TSecond, TReturn> func, string splitOn, bool buffered)
@@ -7558,7 +7549,7 @@ namespace WCOM.SqlBulkSync
     
     #if CSHARP30
                 /// <summary>
-                /// Read multiple objects from a single recordset on the grid
+                /// Read multiple objects from a single record set on the grid
                 /// </summary>
                 public IEnumerable<TReturn> Read<TFirst, TSecond, TThird, TReturn>(Func<TFirst, TSecond, TThird, TReturn> func, string splitOn)
                 {
@@ -7566,7 +7557,7 @@ namespace WCOM.SqlBulkSync
                 }
     #endif
                 /// <summary>
-                /// Read multiple objects from a single recordset on the grid
+                /// Read multiple objects from a single record set on the grid
                 /// </summary>
     #if CSHARP30
                 public IEnumerable<TReturn> Read<TFirst, TSecond, TThird, TReturn>(Func<TFirst, TSecond, TThird, TReturn> func, string splitOn, bool buffered)
@@ -7978,9 +7969,7 @@ namespace WCOM.SqlBulkSync
                     if (dbType == null && val != null && !isCustomQueryParameter) dbType = SqlMapper.LookupDbType(val.GetType(), name, true, out handler);
                     if (dbType == DynamicParameters.EnumerableMultiParameter)
                     {
-    #pragma warning disable 612, 618
                         SqlMapper.PackListParameters(command, name, val);
-    #pragma warning restore 612, 618
                     }
                     else if (isCustomQueryParameter)
                     {
@@ -8392,7 +8381,7 @@ namespace WCOM.SqlBulkSync
                 postgres = new FeatureSupport(true);
     
             /// <summary>
-            /// Gets the featureset based on the passed connection
+            /// Gets the feature set based on the passed connection
             /// </summary>
             public static FeatureSupport Get(IDbConnection connection)
             {
@@ -8411,7 +8400,7 @@ namespace WCOM.SqlBulkSync
         }
     
         /// <summary>
-        /// Represents simple memeber map for one of target parameter or property or field to source DataReader column
+        /// Represents simple member map for one of target parameter or property or field to source DataReader column
         /// </summary>
         sealed partial class SimpleMemberMap : SqlMapper.IMemberMap
         {
@@ -8728,7 +8717,7 @@ namespace WCOM.SqlBulkSync
             }
     
             /// <summary>
-            /// Not impelmeneted as far as default constructor used for all cases
+            /// Not implemented as far as default constructor used for all cases
             /// </summary>
             /// <param name="constructor"></param>
             /// <param name="columnName"></param>
@@ -9176,14 +9165,20 @@ namespace WCOM.SqlBulkSync
 }
 // @@@ END_INCLUDE: https://raw.github.com/mrange/T4Include/master/Common/Generated_Log.cs
 // ############################################################################
-
+// ############################################################################
+// Certains directives such as #define and // Resharper comments has to be 
+// moved to bottom in order to work properly    
+// ############################################################################
+#pragma warning restore 0618
+#pragma warning restore 612, 618
+#pragma warning restore 618
 // ############################################################################
 namespace WCOM.SqlBulkSync.Include
 {
     static partial class MetaData
     {
         public const string RootPath        = @"https://raw.github.com/";
-        public const string IncludeDate     = @"2014-11-12T23:39:56";
+        public const string IncludeDate     = @"2014-12-02T00:34:15";
 
         public const string Include_0       = @"https://raw.github.com/mrange/T4Include/master/Extensions/BasicExtensions.cs";
         public const string Include_1       = @"https://raw.github.com/mrange/T4Include/master/Common/SubString.cs";

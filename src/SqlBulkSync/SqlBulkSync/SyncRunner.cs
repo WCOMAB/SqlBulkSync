@@ -45,7 +45,12 @@ namespace WCOM.SqlBulkSync
                     sourceConn.Database
                     );
                 sourceConn.Open();
-                Log.Success("Connected {0}", sourceConn.ClientConnectionId);
+                Log.Success(
+                    "Connected {0}.{1} ({2})",
+                    sourceConn.DataSource,
+                    sourceConn.Database,
+                    sourceConn.ServerVersion
+                    );
                 
                 Log.Info(
                     "Connecting to target database {0}.{1}",
@@ -53,7 +58,12 @@ namespace WCOM.SqlBulkSync
                     targetConn.Database
                     );
                 targetConn.Open();
-                Log.Success("Connected {0}", targetConn.ClientConnectionId);
+                Log.Success(
+                    "Connected {0}.{1} ({2})",
+                    targetConn.DataSource,
+                    targetConn.Database,
+                    targetConn.ServerVersion
+                    );
 
                 Log.Info("Fetching table schemas");
                 var schemaStopWatch = Stopwatch.StartNew();
