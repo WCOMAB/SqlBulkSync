@@ -3,6 +3,8 @@ WCOM SQL Bulk Sync is a lightweight, performant non-intrusive SQL Server data sy
 It doesn’t use any triggers or events, but instead uses the change tracking features available from SQL Server 2008 and up.
 The tool was developed primary for syncing on premise SQL server data to Azure in an efficient way, where only the changes are transferred. But it will also work just fine between non cloud instances.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/3s4tsximdkxeqt0i?svg=true)](https://ci.appveyor.com/project/WCOMAB/sqlbulksync)
+
 ##Table of contents
 1. [Usage](#usage)
     * [Example process](#example-process)
