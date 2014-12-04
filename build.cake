@@ -8,12 +8,9 @@ Cake build script template
 
 var target          = Argument<string>("target", "Default");
 var configuration   = Argument<string>("configuration", "Release");
-var solutions       = System.IO.Directory
-                            .EnumerateFiles("src", "*.sln", SearchOption.AllDirectories)
-                            .ToArray();
+var solutions       = GetFiles("./**/*.sln");
 var solutionDirs    = solutions
-                        .Select(System.IO.Path.GetDirectoryName)
-                        .ToArray();
+                        .Select(solution=>solution.GetDirectory());
 
 //////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -39,27 +36,23 @@ Task("Clean")
     .Does(() =>
 {
     // Clean directories.
-    Array.ForEach(
-        solutionDirs,
-        solutionDir=>{
-                        Information("Cleaning {0}", solutionDir);
-                        CleanDirectories(solutionDir + "/**/bin/" + configuration);
-                        CleanDirectories(solutionDir + "/**/obj/" + configuration);
-                     }
-    );
+    foreach(var solutionDir in solutionDirs)
+    {
+        Information("Cleaning {0}", solutionDir);
+        CleanDirectories(solutionDir + "/**/bin/" + configuration);
+        CleanDirectories(solutionDir + "/**/obj/" + configuration);
+    }
 });
 
 Task("Restore")
     .Does(() =>
 {
     // Build all solutions.
-    Array.ForEach(
-        solutions,
-        solution=>{
-                        Information("Restoring {0}", solution);
-                        NuGetRestore(solution);
-                  }
-    );
+    foreach(var solution in solutions)
+    {
+        Information("Restoring {0}", solution);
+        NuGetRestore(solution);
+    }
 });
 
 Task("Build")
@@ -68,17 +61,15 @@ Task("Build")
     .Does(() =>
 {
     // Build all solutions.
-    Array.ForEach(
-        solutions,
-        solution=>{
-                        Information("Building {0}", solution);
-                        MSBuild(solution, settings => 
-                            settings.SetPlatformTarget(PlatformTarget.MSIL)
-                                .WithProperty("TreatWarningsAsErrors","true")
-                                .WithTarget("Build")
-                                .SetConfiguration(configuration));
-                  }
-    );
+    foreach(var solution in solutions)
+    {
+        Information("Building {0}", solution);
+        MSBuild(solution, settings => 
+            settings.SetPlatformTarget(PlatformTarget.MSIL)
+                .WithProperty("TreatWarningsAsErrors","true")
+                .WithTarget("Build")
+                .SetConfiguration(configuration));
+    }
 });
 
 Task("Default")
