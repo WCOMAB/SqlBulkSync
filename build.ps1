@@ -15,14 +15,20 @@ if (!(Test-Path $NUGET_EXE)) {
 }
 
 # Restore tools from NuGet.
-pushd
-cd $TOOLS_DIR
-iex "$NUGET_EXE install -ExcludeVersion"
-popd
+Push-Location
+Set-Location $TOOLS_DIR
+Invoke-Expression "$NUGET_EXE install -ExcludeVersion"
+Pop-Location
+if ($LASTEXITCODE -ne 0)
+{
+    exit $LASTEXITCODE
+}
+
 # Make sure that Cake has been installed.
 if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe"
 }
 
 # Start Cake
-iex "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`""
+Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`""
+exit $LASTEXITCODE
