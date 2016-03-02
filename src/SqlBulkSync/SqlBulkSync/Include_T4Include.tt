@@ -1,25 +1,25 @@
 <#
     // Whenever this file is saved the files in the Includes section is downloaded
     // from GitHub (you can download from other websources by changing rootpath)
-    RootPath    = @"https://raw.github.com/";
+    RootPath    = @"https://raw.githubusercontent.com/";
     Namespace   = "WCOM.SqlBulkSync"         ;   // The downloaded content is wrapped in this namespace
     Includes    = new []
         {
             // Include the basic extension from T4Include
-            Include (@"mrange/T4Include/master/Extensions/BasicExtensions.cs"),
-            Include (@"mrange/T4Include/master/Common/SubString.cs"),
-            Include (@"mrange/T4Include/master/Common/Array.cs"),
-            Include (@"mrange/T4Include/master/Extensions/ParseExtensions.cs"),
-            Include (@"mrange/T4Include/master/Extensions/EnumParseExtensions.cs"),
-            Include (@"mrange/T4Include/master/Reflection/StaticReflection.cs"),
-            Include (@"mrange/T4Include/master/Reflection/ClassDescriptor.cs"),
-            Include (@"mrange/T4Include/master/Common/Log.cs"),
-            Include (@"mrange/T4Include/master/Common/ConsoleLog.cs"),
-            Include (@"mrange/T4Include/master/Hron/HRONSerializer.cs"),
-            Include (@"mrange/T4Include/master/Hron/HRONObjectSerializer.cs"),
+            Include (@"wcomab/T4Include/master/Extensions/BasicExtensions.cs"),
+            Include (@"wcomab/T4Include/master/Common/SubString.cs"),
+            Include (@"wcomab/T4Include/master/Common/Array.cs"),
+            Include (@"wcomab/T4Include/master/Extensions/ParseExtensions.cs"),
+            Include (@"wcomab/T4Include/master/Extensions/EnumParseExtensions.cs"),
+            Include (@"wcomab/T4Include/master/Reflection/StaticReflection.cs"),
+            Include (@"wcomab/T4Include/master/Reflection/ClassDescriptor.cs"),
+            Include (@"wcomab/T4Include/master/Common/Log.cs"),
+            Include (@"wcomab/T4Include/master/Common/ConsoleLog.cs"),
+            Include (@"wcomab/T4Include/master/Hron/HRONSerializer.cs"),
+            Include (@"wcomab/T4Include/master/Hron/HRONObjectSerializer.cs"),
 
             // Stackexchange Dapper
-            Include (@"StackExchange/dapper-dot-net/master/Dapper%20NET40/SqlMapper.cs"),
+            Include (@"StackExchange/dapper-dot-net/bf6404f5d0d7e7eb6f51169ff2672eea0142cb3e/Dapper%20NET40/SqlMapper.cs"),
         };
 #>
 

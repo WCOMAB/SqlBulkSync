@@ -36,6 +36,11 @@ namespace WCOM.SqlBulkSync
                         SyncRunner.Run(syncJobPath);
                         break;
                     }
+                    case "PROCESS_GLOBAL_CHANGETRACKING":
+                    {
+                        SyncRunner.Run(globalChangeTracking: true, syncJobPath:syncJobPath);
+                        break;
+                    }
                     case "CREATETEMPLATE":
                     {
                         CreateTemplateFile(syncJobPath);
@@ -67,7 +72,7 @@ namespace WCOM.SqlBulkSync
         public static void Usage()
         {
             Log.Info(
-                "USAGE:\r\n\t{0} PROCESS|CREATETEMPLATE [SyncJobFilePath]",
+                "USAGE:\r\n\t{0} PROCESS|CREATETEMPLATE|PROCESS_GLOBAL_CHANGETRACKING [SyncJobFilePath]",
                 Path.GetFileName(Assembly.GetExecutingAssembly().Location)
                 );
         }
