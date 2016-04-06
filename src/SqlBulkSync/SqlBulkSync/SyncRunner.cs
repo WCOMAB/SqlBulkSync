@@ -1,10 +1,10 @@
 // ----------------------------------------------------------------------------------------------
 // Copyright (c) WCOM AB.
 // ----------------------------------------------------------------------------------------------
-// This source code is subject to terms and conditions of the Microsoft Public License. A 
-// copy of the license can be found in the LICENSE.md file at the root of this distribution. 
-// If you cannot locate the  Microsoft Public License, please send an email to 
-// dlr@microsoft.com. By using this source code in any fashion, you are agreeing to be bound 
+// This source code is subject to terms and conditions of the Microsoft Public License. A
+// copy of the license can be found in the License.md file at the root of this distribution.
+// If you cannot locate the  Microsoft Public License, please send an email to
+// dlr@microsoft.com. By using this source code in any fashion, you are agreeing to be bound
 //  by the terms of the Microsoft Public License.
 // ----------------------------------------------------------------------------------------------
 // You must not remove this notice, or any other, from this software.
@@ -20,7 +20,7 @@ namespace WCOM.SqlBulkSync
 
     public static class SyncRunner
     {
-        public static void Run(string syncJobPath)
+        public static void Run(string syncJobPath, bool globalChangeTracking = false)
         {
             SyncJob syncJob;
             if (!SyncJob.TryLoad(syncJobPath, out syncJob) || syncJob == null)
@@ -29,10 +29,10 @@ namespace WCOM.SqlBulkSync
                 Program.Usage();
                 Environment.Exit(1);
             }
-            ProcessSync(syncJob);
+            ProcessSync(syncJob, globalChangeTracking);
         }
 
-        private static void ProcessSync(SyncJob syncJob)
+        private static void ProcessSync(SyncJob syncJob, bool globalChangeTracking)
         {
             using (SqlConnection
                 sourceConn = new SqlConnection(syncJob.SourceDbConnection),
@@ -45,25 +45,15 @@ namespace WCOM.SqlBulkSync
                     sourceConn.Database
                     );
                 sourceConn.Open();
-                Log.Success(
-                    "Connected {0}.{1} ({2})",
-                    sourceConn.DataSource,
-                    sourceConn.Database,
-                    sourceConn.ServerVersion
-                    );
-                
+                Log.Success("Connected {0}", sourceConn.ClientConnectionId);
+
                 Log.Info(
                     "Connecting to target database {0}.{1}",
                     targetConn.DataSource,
                     targetConn.Database
                     );
                 targetConn.Open();
-                Log.Success(
-                    "Connected {0}.{1} ({2})",
-                    targetConn.DataSource,
-                    targetConn.Database,
-                    targetConn.ServerVersion
-                    );
+                Log.Success("Connected {0}", targetConn.ClientConnectionId);
 
                 Log.Info("Fetching table schemas");
                 var schemaStopWatch = Stopwatch.StartNew();
@@ -72,7 +62,7 @@ namespace WCOM.SqlBulkSync
                         .Tables ?? new List<string>()
                     )
                     .Select(
-                        table => TableSchema.LoadSchema(sourceConn, targetConn, table, syncJob.BatchSize)
+                        table => TableSchema.LoadSchema(sourceConn, targetConn, table, syncJob.BatchSize, globalChangeTracking)
                     ).ToArray();
                 schemaStopWatch.Stop();
                 Log.Success("Found {0} tables, duration {1}", tableSchemas.Length, schemaStopWatch.Elapsed);
@@ -102,13 +92,14 @@ namespace WCOM.SqlBulkSync
         {
             try
             {
-                targetConn.CreateSyncTable(tableSchema);
+                targetConn.CreateSyncTables(tableSchema);
                 sourceConn.BulkCopyData(targetConn, tableSchema);
+                targetConn.DeleteData(tableSchema);
                 targetConn.MergeData(tableSchema);
             }
             finally
             {
-                targetConn.DropSyncTable(tableSchema);
+                targetConn.DropSyncTables(tableSchema);
             }
         }
     }

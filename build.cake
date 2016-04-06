@@ -66,6 +66,7 @@ Task("Build")
         Information("Building {0}", solution);
         MSBuild(solution, settings => 
             settings.SetPlatformTarget(PlatformTarget.MSIL)
+                .UseToolVersion(MSBuildToolVersion.VS2015)
                 .WithProperty("TreatWarningsAsErrors","true")
                 .WithTarget("Build")
                 .SetConfiguration(configuration));

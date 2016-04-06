@@ -9,15 +9,23 @@ $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
 $CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
 
+# Try download NuGet.exe if not exists
+if (!(Test-Path $NUGET_EXE)) {
+    Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $NUGET_EXE
+}
+
 # Make sure NuGet exists where we expect it.
 if (!(Test-Path $NUGET_EXE)) {
     Throw "Could not find NuGet.exe"
 }
 
+# Save nuget.exe path to environment to be available to child processed
+$ENV:NUGET_EXE = $NUGET_EXE
+
 # Restore tools from NuGet.
 Push-Location
 Set-Location $TOOLS_DIR
-Invoke-Expression "$NUGET_EXE install -ExcludeVersion"
+Invoke-Expression "$NUGET_EXE install -ExcludeVersion -Source https://api.nuget.org/v3/index.json"
 Pop-Location
 if ($LASTEXITCODE -ne 0)
 {
